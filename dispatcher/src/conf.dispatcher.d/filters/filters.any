@@ -12,27 +12,55 @@ $include "./default_filters.any"
 # Allow manifest.webmanifest files located in the content
 /0102 { /type "allow" /extension "webmanifest" /path "/content/*/manifest" }
 
-# Allow Quick Search
-/0110 { /type "allow" /extension "json" /selectors "searchresults" /path "/content/*" }
 
 # Allow j_security check for login
-/0111 { /type "allow" /method "POST" /url "/system/sling/login/j_security_check" }
+/0103 { /type "allow" /method "POST" /url "/system/sling/login/j_security_check" }
 
 #Allow logout path
-/0112 { /type "allow" /method "POST" /url "/system/sling/logout" }
+/0104 { /type "allow" /method "POST" /url "/system/sling/logout" }
+
+# Allow all JSON
+/0105 { /type "allow" /extension "json" /path "/content/*" }
 
 # Allow GraphQL global endpoint & preflight requests
 # GraphQL also supports GET requests, if you intend to use GET include it in the rule below
-/0164 { /type "allow" /method '(POST|OPTIONS)' /url "/content/graphql/global/endpoint.json" /extension "json"}
-/0165 { /type "allow" /method '(POST|OPTIONS)' /url "/content/cq:graphql/wknd/endpoint.json" /extension "json"}
+/0163 { /type "allow" /method '(GET|POST|OPTIONS)' /url "/content/graphql/*/endpoint.json" /extension "json"}
+/0164 { /type "allow" /method '(GET|POST|OPTIONS)' /url "/content/graphql/global/endpoint.json" /extension "json"}
+/0165 { /type "allow" /method '(GET|POST|OPTIONS)' /url "/content/cq:graphql/*/endpoint.json" /extension "json"}
+
+
 
 # GraphQL Persisted Queries
-/0170 { /type "allow" /method '(POST|OPTIONS)' /url "/graphql/execute.json/*" }
-/0171 { /type "allow" /url "/graphql/execute.json/*" }
+/0170 { /type "allow" /method '(GET|POST|OPTIONS)' /url "/graphql/execute.json/*" }
+/0171 { /type "allow" /method '(GET|POST|OPTIONS)' /url "/content/_cq_graphql/*/endpoint.json" }
+
+# Asset Share renditions
+/0175 { /type "allow"   /method "GET"   /path "/content/dam"   /extension '(renditions)' }
+
+
+# Allow video files
+/0176 { /type "allow" /extension '(mp4|mov|m4v)' /path "/content/*" }
 
 # Allow to download web manifest for PWA
-/0180 { /type "allow" /extension "webmanifest" }
+/0180 { /type "allow" /extension "webmanifest" /path "*"}
+/0181 { /type "allow" /method "GET" /path "/libs/granite/csrf/*" /extension "json" }
 
-# ContextHub
-/0200 { /type "allow" /url "*/contexthub.pagedata.json" }
-/0201 { /type "allow" /url "/home/users/*.infinity.json" }
+
+# Allow Forms Submissions
+/0185 { /type "allow" /method "POST" /path "/content/forms/af/*" /extension "jsp" }
+/0186 { /type "allow" /path "/content/forms/af/*" /method "POST" /selectors '(submit|internalsubmit|agreement|signSubmit|prefilldata|save|prefilldata|af)' /extension '(jsp|json)' }
+/0187 { /type "allow" /path "/content/fortescue/*" /method "POST" /selectors '(submit|internalsubmit|agreement|signSubmit|prefilldata|save|prefilldata|af)' /extension '(jsp|json)' }
+
+/0188 { /type "allow" /method "GET" /path "/us/en/*" /extension "js" }
+
+
+#Allow Screens Fragment usage
+/0190 { /type "allow" /method "GET" /query "wcmmode=*" }
+/0192 { /type "allow" /extension "html" /selectors "standalone" /path "/content/*" }
+
+#
+# WKND specific filter for category pages and header
+#
+/0200 { /type "allow" /method "GET" /path "/content/*" /selectors '[0-9-]+' /extension "html" }
+/0201 { /type "allow" /method "GET" /path "/conf/wknd/settings/wcm/templates/*" /extension "svg" }
+/0202 { /type "allow" /method "GET" /url "/libs/granite/dispatcher/content/vanityUrls.html" }  # allow vanity URL info to be retrieved

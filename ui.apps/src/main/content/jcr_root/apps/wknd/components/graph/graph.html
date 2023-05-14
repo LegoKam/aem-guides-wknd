@@ -1,0 +1,99 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div id="chart-container">
+    <canvas id="chart"></canvas>
+</div>
+
+<style type="text/css">
+
+  #chart-container {
+    width: 100%;
+    height: 400px;
+    margin: 0 auto;
+    border: 0 px solid #ccc;
+    overflow: hidden;
+  }
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+</style>
+
+
+
+<script>
+
+  var v0, v1, v2, v3, v4, v5;
+
+  function graph(){
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://sheets.googleapis.com/v4/spreadsheets/1f22DKF0_mykFooczCJe_U8B-TlmBpbMpw2NjGh06rLc/values/Sheet1?key=AIzaSyCzyH3Ix1-fqGkFtQLXYCdzmwKg4JBHvXc");
+      xhr.onload = function() {
+          if (xhr.status === 200) {
+              // The request was successful
+              var data = JSON.parse(xhr.responseText);
+              for(i=0;i<data.values.length;i++){
+
+                  console.log("==");
+                  console.log(data.values[i][0]);
+                  console.log(ContextHub.getItem("profile").authorizableId);
+
+                  if(data.values[i][0]==ContextHub.getItem("profile").authorizableId){
+                    v0=(data.values[i][0]);
+                    v1=parseFloat(data.values[i][1]);
+                    v2=parseFloat(data.values[i][2]);
+                    v3=parseFloat(data.values[i][3]);
+                    v4=parseFloat(data.values[i][4]);
+                    v5=parseFloat(data.values[i][5]);
+                    break;
+                  }
+              }
+
+              console.log(v0);
+              console.log(v1);
+              console.log(v2);
+              console.log(v3);
+              console.log(v4);
+              console.log(v5);
+
+              drawGraph();
+
+              // Do something with the data
+          } else {
+              document.write("Map cannot be rendered!");
+          }
+      };
+      xhr.send();
+  }
+
+function drawGraph() {
+    // Define the data for the chart as an array of values
+  const data = [v1, v2, v3, v4, v5];
+
+  // Create a bar chart
+  const ctx = document.getElementById('chart').getContext('2d');
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Jan 2023', 'Feb 2023', 'Mar 2023', 'Apr 2023', 'May 2023'],
+      datasets: [{
+        label: 'Usage Data',
+        data: data,
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+  graph();
+
+</script>

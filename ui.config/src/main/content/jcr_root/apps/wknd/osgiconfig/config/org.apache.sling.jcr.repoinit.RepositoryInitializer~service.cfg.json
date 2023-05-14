@@ -1,0 +1,9 @@
+{
+    "scripts": [
+        "create path (sling:OrderedFolder) /content/dam/",
+        "create path (nt:unstructured) /content/dam/jcr:content",
+        "create service user content-svc-admin with path system/wknd",
+        "set ACL for content-svc-admin\n   allow jcr:all on /content/\n end",
+        "set ACL for content-svc-admin\n   allow jcr:all on /conf/\n end"
+    ]
+}
