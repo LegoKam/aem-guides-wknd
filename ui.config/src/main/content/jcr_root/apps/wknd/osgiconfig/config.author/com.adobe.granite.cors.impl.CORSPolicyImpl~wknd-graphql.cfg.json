@@ -7,14 +7,16 @@
   "supportedmethods":[
     "GET",
     "HEAD",
-    "POST"
+    "POST",
+    "FETCH",
+    "DELETE"
   ],
   "alloworigin":[
     ""
   ],
   "maxage:Integer":1800,
   "alloworiginregexp":[
-    "http://localhost:.*"
+    "*"
   ],
   "allowedpaths":[
     "/content/_cq_graphql/wknd-shared/endpoint.json",
